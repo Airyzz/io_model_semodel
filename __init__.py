@@ -11,14 +11,12 @@ bl_info = {
     "author": "DTZxPorter",
     "version": (0, 0, 3),
     "blender": (2, 80, 0),
+    "category": "Import-Export",
     "location": "File > Import",
     "description": "Import SEModel",
     "wiki_url": "https://github.com/dtzxporter/io_model_semodel",
     "tracker_url": "https://github.com/dtzxporter/io_model_semodel/issues",
-    "support": "COMMUNITY",
-    "category": "Import-Export"
 }
-
 
 class ImportSEModel(bpy.types.Operator, ImportHelper):
     bl_idname = "import_scene.semodel"
@@ -57,9 +55,9 @@ def register():
 
 
 def unregister():
-    bpy.utils.unregister_module(__name__)
+    bpy.utils.unregister_class(ImportSEModel)
     bpy.types.TOPBAR_MT_file_import.remove(menu_func_semodel_import)
 
-
+print(__name__)
 if __name__ == "__main__":
-    register()
+	register()

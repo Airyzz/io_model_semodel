@@ -44,6 +44,7 @@ def load(self, context, filepath=""):
         new_mat.node_tree.links.new(
             bsdf_shader.inputs["Base Color"], material_color_map.outputs["Color"])
 
+
         mesh_mats.append(new_mat)
 
     for mesh in model.meshes:
@@ -228,7 +229,9 @@ def load(self, context, filepath=""):
         modifier.use_vertex_groups = True
 
     # Update the scene
-    bpy.context.scene.update()
+    layer = bpy.context.view_layer
+    layer.update()
+
 
     # Reset the view mode
     bpy.ops.object.mode_set(mode='OBJECT')
