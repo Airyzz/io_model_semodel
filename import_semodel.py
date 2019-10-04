@@ -34,16 +34,42 @@ def load(self, context, filepath=""):
 
         bsdf_shader = new_mat.node_tree.nodes["Principled BSDF"]
         material_color_map = new_mat.node_tree.nodes.new("ShaderNodeTexImage")
-
+		
+        normal_map = new_mat.node_tree.nodes.new("ShaderNodeNormalMap")
+		
+        normal_color_map = new_mat.node_tree.nodes.new("ShaderNodeTexImage")
+		
+        specular_color_map = new_mat.node_tree.nodes.new("ShaderNodeTexImage")
+		
         try:
             material_color_map.image = bpy.data.images.load(
                 __build_image_path__(filepath, mat.inputData.diffuseMap))
         except RuntimeError:
             pass
+			
+        try:
+            normal_color_map.image = bpy.data.images.load(
+                __build_image_path__(filepath, mat.inputData.normalMap))
+        except RuntimeError:
+            pass
 
+        try:
+            specular_color_map.image = bpy.data.images.load(
+                __build_image_path__(filepath, mat.inputData.specularMap))
+        except RuntimeError:
+            pass
+			
         new_mat.node_tree.links.new(
             bsdf_shader.inputs["Base Color"], material_color_map.outputs["Color"])
+		
+        new_mat.node_tree.links.new(
+            bsdf_shader.inputs["Normal"], normal_map.outputs["Normal"])
 
+        new_mat.node_tree.links.new(
+            normal_map.inputs["Color"], normal_color_map.outputs["Color"])
+			
+        new_mat.node_tree.links.new(
+            bsdf_shader.inputs["Specular"], specular_color_map.outputs["Color"])
 
         mesh_mats.append(new_mat)
 
